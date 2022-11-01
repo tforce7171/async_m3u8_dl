@@ -42,5 +42,5 @@ def _concat_chunks(playlist, output):
 	subprocess.run(cmd, shell=True)
 
 def _clear_temp():
-	shutil.rmtree('async_m3u8_dl/temp')
+	shutil.rmtree('async_m3u8_dl/temp', ignore_errors=True)
 	os.mkdir('async_m3u8_dl/temp')
