@@ -29,7 +29,7 @@ def _get_chunks(playlist):
 def _save_chunks(chunks, playlist):
 	for chunk in chunks:
 		for uri in playlist.files:
-			file = uri.split('/')[-1]
+			file = urlparse(uri).path.split('/')[-1]
 			if file in str(chunk._url):
 				break
 		with open(f'{temp_path}/{file}', 'wb') as f:
@@ -38,7 +38,7 @@ def _save_chunks(chunks, playlist):
 def _concat_chunks(playlist, output):
 	with open(f'{temp_path}/filelist.txt', 'w') as f:
 		for file in playlist.files:
-			path_to_file = os.path.join(temp_path, file.split('/')[-1])
+			path_to_file = os.path.join(temp_path, urlparse(file).path.split('/')[-1]).replace('\\', '/')
 			f.write(f'file {path_to_file}\n')
 	cmd = f'ffmpeg -y -f concat -safe 0 -i {temp_path}/filelist.txt -c copy "{output}"'
 	subprocess.run(cmd, shell=True)
