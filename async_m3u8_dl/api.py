@@ -7,6 +7,8 @@ import shutil
 import async_requests
 from pprint import pprint
 
+temp_path = os.path.join(os.path.dirname(__file__), "temp")
+
 def download(m3u8_file, output):
 	_clear_temp()
 	playlist = m3u8.load(m3u8_file)
@@ -30,17 +32,17 @@ def _save_chunks(chunks, playlist):
 			file = uri.split('/')[-1]
 			if file in str(chunk._url):
 				break
-		with open(f'async_m3u8_dl/temp/{file}', 'wb') as f:
+		with open(f'{temp_path}/{file}', 'wb') as f:
 			f.write(chunk._body)
 
 def _concat_chunks(playlist, output):
-	with open('async_m3u8_dl/temp/filelist.txt', 'w') as f:
+	with open(f'{temp_path}/filelist.txt', 'w') as f:
 		for file in playlist.files:
-			path_to_file = os.path.join(os.getcwd(), 'async_m3u8_dl/temp\\'+file.split('/')[-1]).replace('\\', '/')
+			path_to_file = os.path.join(temp_path, file.split('/')[-1])
 			f.write(f'file {path_to_file}\n')
-	cmd = f'ffmpeg -y -f concat -safe 0 -i async_m3u8_dl/temp/filelist.txt -c copy "{output}"'
+	cmd = f'ffmpeg -y -f concat -safe 0 -i {temp_path}/filelist.txt -c copy "{output}"'
 	subprocess.run(cmd, shell=True)
 
 def _clear_temp():
-	shutil.rmtree('async_m3u8_dl/temp', ignore_errors=True)
-	os.mkdir('async_m3u8_dl/temp')
+	shutil.rmtree(temp_path, ignore_errors=True)
+	os.mkdir(temp_path)
