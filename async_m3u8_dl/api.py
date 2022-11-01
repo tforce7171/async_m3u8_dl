@@ -40,6 +40,8 @@ def _concat_chunks(playlist, output):
 		for file in playlist.files:
 			path_to_file = os.path.join(temp_path, urlparse(file).path.split('/')[-1]).replace('\\', '/')
 			f.write(f'file {path_to_file}\n')
+	if not os.path.exists(os.path.dirname(output)):
+		os.mkdir(os.path.dirname(output))
 	cmd = f'ffmpeg -y -f concat -safe 0 -i {temp_path}/filelist.txt -c copy "{output}"'
 	subprocess.run(cmd, shell=True)
 
