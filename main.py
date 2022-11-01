@@ -6,7 +6,6 @@ import click
 @click.argument('output', type=str, required=True)
 
 def main(i, output):
-    print("a")
     async_m3u8_dl.download(i, output)
 
 if __name__ == '__main__':
