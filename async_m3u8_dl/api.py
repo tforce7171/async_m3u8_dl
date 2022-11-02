@@ -15,7 +15,7 @@ def download(m3u8_file, output):
 	chunks = _get_chunks(playlist)
 	_save_chunks(chunks, playlist)
 	_concat_chunks(playlist, output)
-	_clear_temp()
+	# _clear_temp()
 
 def _get_chunks(playlist):
 	urls = []
@@ -28,17 +28,19 @@ def _get_chunks(playlist):
 
 def _save_chunks(chunks, playlist):
 	for i, uri in enumerate(playlist.files):
+		print(uri)
 		for chunk in chunks:
-			if uri in chunk._url:
+			if uri in str(chunk._url):
+				print(f'{temp_path}/{i}.ts')
 				with open(f'{temp_path}/{i}.ts', 'wb') as f:
 					f.write(chunk._body)
 
 def _concat_chunks(playlist, output):
 	with open(f'{temp_path}/filelist.txt', 'w') as f:
-		for file in playlist.files:
-			path_to_file = os.path.join(temp_path, urlparse(file).path.split('/')[-1]).replace('\\', '/')
+		for i, uri in enumerate(playlist.files):
+			path_to_file = os.path.join(temp_path, f'{i}.ts').replace('\\', '/')
 			f.write(f'file {path_to_file}\n')
-	if not os.path.exists(os.path.dirname(output)):
+	if os.path.dirname(output) != '' and not os.path.exists(os.path.dirname(output)):
 		os.mkdir(os.path.dirname(output))
 	cmd = f'ffmpeg -y -f concat -safe 0 -i {temp_path}/filelist.txt -c copy "{output}"'
 	subprocess.run(cmd, shell=True)
