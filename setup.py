@@ -2,6 +2,7 @@ import setuptools
 
 requires = [
     "m3u8",
+    "click",
     "async_requests @ git+https://github.com/tforce7171/async_requests.git"
 ]
 
