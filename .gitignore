@@ -1,4 +1,6 @@
 .wenv
+.uenv
 *.pyc
 test.py
 *.mp4
+async_m3u8_dl/temp
