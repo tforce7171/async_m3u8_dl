@@ -8,7 +8,7 @@ requires = [
 
 setuptools.setup(
     name="async-m3u8-dl",
-    version="0.1.0",
+    version="0.1.1",
     author="tforce7171",
     author_email="taiseimaruyama7171@gmail.com",
     description="asyncronusly download files according to m3u8 data",
