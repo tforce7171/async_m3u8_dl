@@ -27,13 +27,11 @@ def _get_chunks(playlist):
 	return results
 
 def _save_chunks(chunks, playlist):
-	for chunk in chunks:
-		for uri in playlist.files:
-			file = urlparse(uri).path.split('/')[-1]
-			if file in str(chunk._url):
-				break
-		with open(f'{temp_path}/{file}', 'wb') as f:
-			f.write(chunk._body)
+	for i, uri in enumerate(playlist.files):
+		for chunk in chunks:
+			if uri in chunk._url:
+				with open(f'{temp_path}/{i}.ts', 'wb') as f:
+					f.write(chunk._body)
 
 def _concat_chunks(playlist, output):
 	with open(f'{temp_path}/filelist.txt', 'w') as f:
