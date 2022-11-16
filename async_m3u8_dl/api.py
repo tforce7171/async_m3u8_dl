@@ -28,10 +28,8 @@ def _get_chunks(playlist):
 
 def _save_chunks(chunks, playlist):
 	for i, uri in enumerate(playlist.files):
-		print(uri)
 		for chunk in chunks:
 			if uri in str(chunk._url):
-				print(f'{temp_path}/{i}.ts')
 				with open(f'{temp_path}/{i}.ts', 'wb') as f:
 					f.write(chunk._body)
 
@@ -42,7 +40,7 @@ def _concat_chunks(playlist, output):
 			f.write(f'file {path_to_file}\n')
 	if os.path.dirname(output) != '' and not os.path.exists(os.path.dirname(output)):
 		os.mkdir(os.path.dirname(output))
-	cmd = f'ffmpeg -y -f concat -safe 0 -i {temp_path}/filelist.txt -c copy "{output}"'
+	cmd = f'ffmpeg -hide_banner -loglevel fatal -y -f concat -safe 0 -i {temp_path}/filelist.txt -c copy "{output}"'
 	subprocess.run(cmd, shell=True)
 
 def _clear_temp():
