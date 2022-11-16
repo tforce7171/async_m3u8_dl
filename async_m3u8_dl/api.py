@@ -28,10 +28,8 @@ def _get_chunks(playlist):
 
 def _save_chunks(chunks, playlist):
 	for i, uri in enumerate(playlist.files):
-		print(uri)
 		for chunk in chunks:
 			if uri in str(chunk._url):
-				print(f'{temp_path}/{i}.ts')
 				with open(f'{temp_path}/{i}.ts', 'wb') as f:
 					f.write(chunk._body)
 
